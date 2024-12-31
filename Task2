@@ -1,0 +1,169 @@
+/*c++ coding for student management sysetem*/
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class Student {
+private:
+    string name;
+    string rollNo;
+    float marks;
+    int age;
+    float cgpa;
+    
+
+public:
+    Student(string n, string rn, float m, int a, float c) 
+        : name(n), rollNo(rn), marks(m), age(a), cgpa(c) {}
+
+    string getName() const { return name; }
+    void setName(const string& newName) { name = newName; }
+    string getRollNo() const { return rollNo; }
+    float getMarks() const { return marks; }
+    void setMarks(float newMarks) { marks = newMarks; }
+    int getAge() const { return age; }
+    float getcgpa() const { return cgpa; }
+    
+
+    void display() const {
+        cout << "Name: " << name << endl;
+        cout << "Roll No: " << rollNo << endl;
+        cout << "Total_Marks: " << marks << endl;
+        cout << "Age: " << age << endl;
+        cout << "CGPA: " << cgpa << endl;
+        
+    }
+};
+
+class StudentManagementSystem {
+private:
+    vector<Student> students;
+
+public:
+    void addStudent() {
+        string name;
+        string rollNo;
+        float marks;
+        int age;
+        float cgpa;
+     
+        cout << "Enter student name: ";
+        cin >> name;
+        cout << "Enter roll number: ";
+        cin >> rollNo; 
+        cout << "Enter total marks: ";
+        cin >> marks;
+        cout << "Enter age: ";
+        cin >> age;
+        cout << "Enter cgpa: ";
+        cin >> cgpa;
+        
+
+        students.push_back(Student(name, rollNo, marks, age, cgpa));
+    }
+
+    void displayStudents() const {
+        for (const Student& student : students) {
+            student.display();
+            cout << endl;
+        }
+    }
+
+    void searchStudent(string rollNo) const { 
+        for (const Student& student : students) {
+            if (student.getRollNo() == rollNo) {
+                student.display();
+                return;
+            }
+        }
+        cout << "Student with roll number " << rollNo << " not found." << endl;
+    }
+
+    void updateStudent(string rollNo) { 
+        for (Student& student : students) {
+            if (student.getRollNo() == rollNo) {
+                string newName;
+                float newMarks;
+
+                cout << "Enter new name: ";
+                cin >> newName;
+                cout << "Enter new marks: ";
+                cin >> newMarks;
+
+                student.setName(newName);
+                student.setMarks(newMarks);
+                cout << "Student information updated successfully." << endl;
+                return;
+            }
+        }
+        cout << "Student with roll number " << rollNo << " not found." << endl;
+    }
+
+    void deleteStudent(string rollNo) {
+        for (auto it = students.begin(); it != students.end(); ++it) {
+            if (it->getRollNo() == rollNo) {
+                students.erase(it);
+                cout << "Student with roll number " << rollNo << " deleted successfully." << endl;
+                return;
+            }
+        }
+        cout << "Student with roll number " << rollNo << " not found." << endl;
+    }
+};
+
+int main() {
+    StudentManagementSystem sms;
+    int choice;
+
+    do {
+        cout << "\nStudent Management System" << endl;
+        cout << "1. Add Student" << endl;
+        cout << "2. Display Students" << endl;
+        cout << "3. Search Student" << endl;
+        cout << "4. Update Student" << endl;
+        cout << "5. Delete Student" << endl;
+        cout << "6. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+               switch (choice) {
+            case 1:
+                sms.addStudent();
+                break;
+            case 2:
+                sms.displayStudents();
+                break;
+            case 3: { 
+                string rollNoToSearch;
+                cout << "Enter roll number to search: ";
+                cin >> rollNoToSearch;
+                sms.searchStudent(rollNoToSearch); 
+                break;
+            }
+            case 4: {
+                string rollNoToUpdate;
+                cout << "Enter roll number to update: ";
+                cin >> rollNoToUpdate;
+                sms.updateStudent(rollNoToUpdate); 
+                break;
+            }
+            case 5: {
+                string rollNoToDelete;
+                cout << "Enter roll number to delete: ";
+                cin >> rollNoToDelete;
+                sms.deleteStudent(rollNoToDelete); 
+                break;
+            }
+            case 6:
+                cout << "Exiting..." << endl;
+                break;
+            default:
+                cout << "Invalid choice." << endl;
+                break; 
+        }
+    } while (choice != 6);
+
+    return 0;
+}
